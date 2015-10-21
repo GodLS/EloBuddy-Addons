@@ -241,7 +241,7 @@ namespace ezEvade
                 posTable.OrderBy(p => p.rejectPosition)
                         .ThenBy(p => p.posDangerLevel)
                         .ThenBy(p => p.posDangerCount)
-                    //.ThenBy(p => p.hasExtraDistance)
+                        //.ThenBy(p => p.hasExtraDistance)
                         .ThenBy(p => p.distanceToMouse);
 
                 if (sortedPosTable.First().posDangerCount != 0) //if can't dodge smoothly, dodge fast
@@ -269,7 +269,7 @@ namespace ezEvade
             //};
 
 
-           sortedPosTable.OrderByDescending(p => p.position.Distance(myHero));
+            sortedPosTable.OrderByDescending(p => p.position.Distance(myHero));
 
             foreach (var posInfo in sortedPosTable)
             {
@@ -327,7 +327,7 @@ namespace ezEvade
                     posChecked++;
                     var cRadians = (2 * Math.PI / (curCircleChecks - 1)) * i; //check decimals
                     var pos = new Vector2((float)Math.Floor(heroPoint.X + curRadius * Math.Cos(cRadians)), (float)Math.Floor(heroPoint.Y + curRadius * Math.Sin(cRadians)));
-                                                            
+
                     //if (pos.Distance(myHero.Position.To2D()) < 100)
                     //    dist = 0;
 
@@ -335,7 +335,7 @@ namespace ezEvade
                     posInfo.isDangerousPos = pos.CheckDangerousPos(6) || CheckMovePath(pos);
                     posInfo.distanceToMouse = pos.GetPositionValue();
                     posInfo.hasExtraDistance = extraEvadeDistance > 0 ? pos.HasExtraAvoidDistance(extraEvadeDistance) : false;
-                    
+
                     posTable.Add(posInfo);
                 }
             }
@@ -552,20 +552,20 @@ namespace ezEvade
                     collisionCandidates.Add(hero);
                 }
 
-                List<Obj_AI_Base> minionList = new List<Obj_AI_Base>();
+                List<Obj_AI_Minion> minionList = new List<Obj_AI_Minion>();
 
                 if (spell.spellTargets.Contains(SpellTargets.EnemyMinions)
                     && spell.spellTargets.Contains(SpellTargets.AllyMinions))
                 {
-                    minionList = EntityManager.GetLaneMinions(EntityManager.UnitTeam.Both, Player.Instance.ServerPosition.To2D(), spell.range);
+                    minionList = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Both, Player.Instance.ServerPosition, spell.range).ToList();
                 }
                 else if (spell.spellTargets.Contains(SpellTargets.EnemyMinions))
                 {
-                    minionList = EntityManager.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Instance.ServerPosition.To2D(), spell.range);
+                    minionList = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Instance.ServerPosition, spell.range).ToList();
                 }
                 else if (spell.spellTargets.Contains(SpellTargets.AllyMinions))
                 {
-                    minionList = EntityManager.GetLaneMinions(EntityManager.UnitTeam.Ally, Player.Instance.ServerPosition.To2D(), spell.range);
+                    minionList = EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Ally, Player.Instance.ServerPosition, spell.range).ToList();
                 }
 
                 foreach (var minion in minionList.Where(h => h.IsValidTarget(spell.range)))
@@ -653,8 +653,8 @@ namespace ezEvade
             {
                 var sortedPosTable =
                 posTable.OrderBy(p => p.isDangerousPos)
-                    //.ThenByDescending(p => p.hasComfortZone)
-                    //.ThenBy(p => p.hasExtraDistance)
+                        //.ThenByDescending(p => p.hasComfortZone)
+                        //.ThenBy(p => p.hasExtraDistance)
                         .ThenBy(p => p.distanceToMouse);
 
                 var first = sortedPosTable.FirstOrDefault();

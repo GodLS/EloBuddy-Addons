@@ -163,7 +163,7 @@ namespace Irelia_Buddy
             if (Player.ManaPercent <= IreliaMenu.LaneClearMenu["laneclear.mana"].Cast<Slider>().CurrentValue) return;
 
             var qminion =
-                EntityManager.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Position.To2D(), Spells.Q.Range)
+                EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Position, Spells.Q.Range)
                     .FirstOrDefault(
                         m =>
                             m.Distance(Player) <= Spells.Q.Range &&
@@ -270,7 +270,7 @@ namespace Irelia_Buddy
             if (gctarget == null) return;
 
             var qminion =
-                EntityManager.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Position.To2D(), Spells.Q.Range + 350)
+                EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Position, Spells.Q.Range + 350)
                     .Where(
                         m =>
                         m.IsValidTarget()
@@ -407,7 +407,7 @@ namespace Irelia_Buddy
             if (gctarget == null) return;
 
             var qminion =
-                EntityManager.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Position.To2D(), Spells.Q.Range + 350)
+                EntityManager.MinionsAndMonsters.GetLaneMinions(EntityManager.UnitTeam.Enemy, Player.Position, Spells.Q.Range + 350)
                     .Where(
                         m =>
                         m.IsValidTarget()
